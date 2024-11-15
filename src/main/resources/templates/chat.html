@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ChatterBox - Real-time Chat</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-header">
+        ChatterBox
+    </div>
+    <div id="chatMessages" class="chat-messages"></div>
+    <div class="chat-input">
+        <input type="text" id="message" placeholder="Enter your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<script>
+    var stompClient = null;
+    var clientId = "client-" + Math.random().toString(36).substring(2, 15);
+
+    function connect() {
+        var socket = new SockJS('/chat');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                var message = JSON.parse(messageOutput.body);
+                // Add a check for undefined timestamp and generate one if it's missing
+                var timestamp = message.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+                if (message.clientId !== clientId) {
+                    showMessage(message.content, timestamp, false); // Incoming message (from others)
+                }
+            });
+        });
+    }
+
+    function sendMessage() {
+        var message = document.getElementById("message").value;
+        if (message.trim() !== "") {
+            var timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); // Format time as HH:MM AM/PM
+            stompClient.send("/app/sendMessage", {}, JSON.stringify({'content': message, 'clientId': clientId, 'timestamp': timestamp}));
+            showMessage(message, timestamp, true); // Your own message
+            document.getElementById("message").value = "";
+        }
+    }
+
+    function showMessage(message, timestamp, isUser) {
+        var chatMessages = document.getElementById("chatMessages");
+        var messageElement = document.createElement("div");
+        messageElement.classList.add("message");
+        messageElement.classList.add(isUser ? "user" : "other");
+
+        var messageText = document.createElement("span");
+        messageText.classList.add("message-text");
+        messageText.textContent = message;
+
+        var messageTimestamp = document.createElement("span");
+        messageTimestamp.textContent = ` ${timestamp}`;
+        messageTimestamp.classList.add("timestamp");
+
+        messageElement.appendChild(messageText);
+        messageElement.appendChild(messageTimestamp);
+        chatMessages.appendChild(messageElement);
+
+        // Scroll to the bottom to show new messages
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    connect();
+</script>
+
+</body>
+</html>

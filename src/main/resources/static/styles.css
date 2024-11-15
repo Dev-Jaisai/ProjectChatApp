@@ -1,0 +1,131 @@
+/* General Body Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e8f0fe; /* Light blue-gray background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Chat Container */
+.chat-container {
+    width: 450px;
+    height: 700px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+/* Chat Header */
+.chat-header {
+    background-color: #00796b; /* Modern teal color */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    border-radius: 20px 20px 0 0;
+}
+
+/* Chat Messages Container */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f9f9f9; /* Light grey to improve message visibility */
+}
+
+/* Message Bubbles */
+.message {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    font-size: 1em;
+    line-height: 1.4;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center; /* Align timestamp with message text */
+    margin-bottom: 5px; /* Space between messages */
+}
+
+/* Styles for User Message (Right Side) */
+.message.user {
+    background-color: #dcf8c6; /* WhatsApp-like soft green */
+    align-self: flex-end;
+    border-radius: 15px 15px 5px 15px; /* Rounded with a sharper edge on the left */
+}
+
+/* Styles for Other Messages (Left Side) */
+.message.other {
+    background-color: #ffffff; /* White bubble for received messages */
+    align-self: flex-start;
+    border-radius: 15px 15px 15px 5px; /* Rounded with a sharper edge on the right */
+    border: 1px solid #e0e0e0; /* Light border for incoming messages */
+}
+
+/* Message Text */
+.message-text {
+    margin-right: 10px; /* Space between message and timestamp */
+    display: inline-block;
+}
+
+/* Timestamp Styling */
+.timestamp {
+    font-size: 0.75em;
+    color: #757575; /* Subtle grey for timestamps */
+    display: inline-block;
+    align-self: flex-end; /* Align timestamp at the end of the message */
+}
+
+/* Chat Input Area */
+.chat-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #ccc;
+    background-color: #ffffff;
+}
+
+/* Message Input Field */
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #b0bec5; /* Light border */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
+    outline: none;
+}
+
+/* Send Button */
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+    background-color: #004d40; /* Darker teal for hover effect */
+}
+
+.chat-input button:active {
+    background-color: #00332e; /* Even darker teal for active state */
+}
